@@ -14,6 +14,9 @@ import (
 //
 // Personal fork: added non-zero exit code message for easier debugging
 // when dive fails in CI/scripting contexts.
+//
+// Note: set DIVE_CI=true in your environment to run in CI mode,
+// which skips the interactive TUI and just prints the image efficiency report.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)

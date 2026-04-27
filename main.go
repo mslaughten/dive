@@ -33,6 +33,9 @@ import (
 //
 // Personal note: use `dive --ignore-errors` to continue even when some
 // layers can't be fully analyzed (useful for scratch-based or distroless images).
+//
+// Personal note: use `dive --lowestEfficiency 0.95` to enforce a stricter
+// efficiency threshold than the default 0.9 — I prefer this for production images.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)

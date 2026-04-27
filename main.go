@@ -23,6 +23,9 @@ import (
 //
 // Personal note: I also find it useful to alias this in ~/.bashrc:
 //   alias dive='DIVE_CI=true dive'   # for quick non-interactive checks
+//
+// Personal note: use `dive --source docker-archive image.tar` to analyze
+// exported tarballs offline without needing the Docker daemon running.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)

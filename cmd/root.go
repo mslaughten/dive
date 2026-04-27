@@ -43,7 +43,8 @@ func init() {
 
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.dive.yaml)")
-	rootCmd.PersistentFlags().String("source", "docker", "the source of the image to analyze. Available sources: docker, podman, docker-archive, oci-archive, oci-dir")
+	// Default source changed to podman since that's what I use locally
+	rootCmd.PersistentFlags().String("source", "podman", "the source of the image to analyze. Available sources: docker, podman, docker-archive, oci-archive, oci-dir")
 	rootCmd.PersistentFlags().Bool("ci", false, "skip the interactive TUI and validate against CI rules")
 	rootCmd.PersistentFlags().String("ci-config", ".dive-ci", "path to the CI config file")
 	rootCmd.PersistentFlags().Bool("json", false, "output results as JSON (for CI mode)")
@@ -97,21 +98,4 @@ func runDive(imageRef string) error {
 	}
 
 	// Interactive TUI mode
-	return runUI(imageRef, source)
-}
-
-// runCI performs image analysis and validates against CI rules without a TUI.
-func runCI(imageRef, source string) error {
-	// TODO: implement CI analysis pipeline
-	_ = source
-	_ = imageRef
-	return nil
-}
-
-// runUI launches the interactive terminal UI for image exploration.
-func runUI(imageRef, source string) error {
-	// TODO: implement TUI launch
-	_ = source
-	_ = imageRef
-	return nil
-}
+	

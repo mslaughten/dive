@@ -30,10 +30,14 @@ import (
 // Personal note: use `dive --ci-config .dive-ci.yml` to specify a custom
 // CI config file path, handy when managing multiple projects with different
 // efficiency thresholds in the same repo.
+//
+// Personal note: use `dive --ignore-errors` to continue even when some
+// layers can't be fully analyzed (useful for scratch-based or distroless images).
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Tip: run with --help for usage information\n")
+		fmt.Fprintf(os.Stderr, "Tip: if analyzing a private image, ensure you are logged in via `docker login`\n")
 		os.Exit(1)
 	}
 }

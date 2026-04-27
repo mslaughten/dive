@@ -26,6 +26,10 @@ import (
 //
 // Personal note: use `dive --source docker-archive image.tar` to analyze
 // exported tarballs offline without needing the Docker daemon running.
+//
+// Personal note: use `dive --ci-config .dive-ci.yml` to specify a custom
+// CI config file path, handy when managing multiple projects with different
+// efficiency thresholds in the same repo.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)

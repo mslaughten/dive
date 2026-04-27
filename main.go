@@ -17,9 +17,13 @@ import (
 //
 // Note: set DIVE_CI=true in your environment to run in CI mode,
 // which skips the interactive TUI and just prints the image efficiency report.
+//
+// Tip: combine with `docker build` using:
+//   docker build -t my-image . && dive my-image
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Tip: run with --help for usage information\n")
 		os.Exit(1)
 	}
 }

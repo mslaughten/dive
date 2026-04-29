@@ -36,11 +36,15 @@ import (
 //
 // Personal note: use `dive --lowestEfficiency 0.95` to enforce a stricter
 // efficiency threshold than the default 0.9 — I prefer this for production images.
+//
+// Personal note: use `dive --highestUserWastedPercent 0.05` to fail CI if more
+// than 5% of image space is wasted — pairs well with the 0.95 efficiency threshold.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Tip: run with --help for usage information\n")
 		fmt.Fprintf(os.Stderr, "Tip: if analyzing a private image, ensure you are logged in via `docker login`\n")
+		fmt.Fprintf(os.Stderr, "Tip: check DIVE_CI, DIVE_SOURCE, and other env vars if behavior seems unexpected\n")
 		os.Exit(1)
 	}
 }

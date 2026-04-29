@@ -68,6 +68,7 @@ func NewEvaluator(cfg *Config) *Evaluator {
 
 // Evaluate runs all configured rules against the provided image analysis result.
 // Returns an EvaluationResult indicating whether the image passes CI checks.
+// Note: rules are evaluated independently; a single failure marks the whole run as failed.
 func (e *Evaluator) Evaluate(analysis *image.AnalysisResult) (*EvaluationResult, error) {
 	result := &EvaluationResult{Pass: true}
 
@@ -90,6 +91,7 @@ func (e *Evaluator) Evaluate(analysis *image.AnalysisResult) (*EvaluationResult,
 		}
 
 		status := RulePass
+		// Fail if actual value is strictly below the configured threshold.
 		if actual < threshold {
 			status = RuleFail
 			result.Pass = false
@@ -106,6 +108,7 @@ func (e *Evaluator) Evaluate(analysis *image.AnalysisResult) (*EvaluationResult,
 }
 
 // parseRule extracts the threshold and enabled flag from a raw rule value.
+// Accepted string values for disabling a rule: "disabled", "off", or "ignore".
 func parseRule(name string, raw interface{}) (Rule, float64, bool, error) {
 	rule := Rule{Name: name}
 	switch v := raw.(type) {
@@ -114,26 +117,11 @@ func parseRule(name string, raw interface{}) (Rule, float64, bool, error) {
 	case int:
 		return rule, float64(v), true, nil
 	case string:
-		if v == "disabled" || v == "off" {
+		if v == "disabled" || v == "off" || v == "ignore" {
 			return rule, 0, false, nil
 		}
 		return rule, 0, false, fmt.Errorf("unsupported string value %q", v)
 	default:
-		return rule, 0, false, fmt.Errorf("unsupported type %T", raw)
-	}
-}
-
-// getMetric maps a rule name to the corresponding metric in the analysis result.
-func getMetric(ruleName string, analysis *image.AnalysisResult) (float64, error) {
-	switch ruleName {
-	case "lowestEfficiency":
-		return analysis.Efficiency, nil
-	case "highestWastedBytes":
-		// Invert: pass when wasted bytes are below threshold (expressed as ratio)
-		return 1.0 - analysis.WastedPercent, nil
-	case "highestUserWastedPercent":
-		return 1.0 - analysis.WastedPercent, nil
-	default:
-		return 0, fmt.Errorf("unknown rule %q", ruleName)
+		return rule, 0, false, fmt.Errorf("unsupported value type %T for rule %q", raw, name)
 	}
 }

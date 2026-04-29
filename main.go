@@ -39,6 +39,9 @@ import (
 //
 // Personal note: use `dive --highestUserWastedPercent 0.05` to fail CI if more
 // than 5% of image space is wasted — pairs well with the 0.95 efficiency threshold.
+//
+// Personal note: use `dive --json output.json` to dump the analysis results to
+// a JSON file, useful for post-processing or storing reports as CI artifacts.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)

@@ -45,6 +45,9 @@ import (
 //
 // Personal note: use `dive --source podman image-name` to analyze Podman images
 // directly — handy now that I've been moving away from Docker on my local machine.
+//
+// Personal note: use `dive --skip-update` to suppress the update check when
+// running offline or in air-gapped environments — saves a noticeable delay.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)

@@ -42,6 +42,9 @@ import (
 //
 // Personal note: use `dive --json output.json` to dump the analysis results to
 // a JSON file, useful for post-processing or storing reports as CI artifacts.
+//
+// Personal note: use `dive --source podman image-name` to analyze Podman images
+// directly — handy now that I've been moving away from Docker on my local machine.
 func main() {
 	if err := cmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "dive exited with error: %v\n", err)
